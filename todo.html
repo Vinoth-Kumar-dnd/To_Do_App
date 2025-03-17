@@ -4,15 +4,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="A to do app">
-        <meta name="keywords" content="HTML+>CSS+>Js">
+        <meta name="keywords" content="HTML+CSS+JS">
         <meta name="author" content="V">
         <link rel="stylesheet" href="styles.css">
         <title>To_Do</title>
     </head>
 
     <body>
-
-        
         <h1>My To Do App</h1>
         <table>
             <tr>
@@ -43,15 +41,19 @@
             </tr>
         </table>
         
-            <h2>Saved Tasks:</h2>
+        <h2>Saved Tasks:</h2>
         <ul id="taskList"></ul>
-        
 
         <script>
         function save() {
-            let task = document.getElementById("task").value;
-            let priority = document.getElementById("priority").value;
-             let date=  document.getElementById("date").value;
+            let taskInput = document.getElementById("task");
+            let priorityInput = document.getElementById("priority");
+            let dateInput = document.getElementById("date");
+
+            let task = taskInput.value.trim();
+            let priority = priorityInput.value;
+            let date = dateInput.value;
+
             if (task === "") {
                 alert("Please enter a task!");
                 return;
@@ -59,62 +61,86 @@
 
             let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-            tasks.push({ task, priority,date });
+            let editIndex = taskInput.getAttribute("data-index");
+
+            if (editIndex !== null && editIndex !== "") {
+                
+                tasks[parseInt(editIndex, 10)] = { task, priority, date };
+                taskInput.removeAttribute("data-index"); 
+            } else {
+                
+                tasks.push({ task, priority, date });
+            }
 
             localStorage.setItem("tasks", JSON.stringify(tasks));
-
             displayTasks();
 
-     taskInput.value = "";
-    priorityInput.value = "urgent"; 
-    dateInput.value = "";
+         
+            taskInput.value = "";
+            priorityInput.value = "urgent"; 
+            dateInput.value = "";
         }
 
         function sortTasksByDate(tasks) {
-    return tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
-}
+            return tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+        }
 
-
-        function displayTasks(){
+        function displayTasks() {
             let taskList = document.getElementById("taskList");
-                  taskList.innerHTML = ""; 
+            taskList.innerHTML = ""; 
 
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks = sortTasksByDate(tasks);
+            let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            tasks = sortTasksByDate(tasks);
 
+            for (let i = 0; i < tasks.length; i++) {
+                let li = document.createElement("li");
+                li.innerHTML = `${tasks[i].task} - <strong>${tasks[i].priority}</strong> [Deadline: ${tasks[i].date}]`;
 
+                let editBtn = document.createElement("button");
+                editBtn.textContent = "✏️ Edit";
+                editBtn.style.marginLeft = "10px";
+                editBtn.style.cursor = "pointer";
+                editBtn.onclick = function () {
+                    editTask(i);
+                };
 
+                let deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "❌ Delete";
+                deleteBtn.style.marginLeft = "10px";
+                deleteBtn.style.cursor = "pointer";
+                deleteBtn.onclick = function () {
+                    deleteTask(i);
+                };
 
+                li.appendChild(editBtn); 
+                li.appendChild(deleteBtn); 
+                taskList.appendChild(li);
+            }
+        }
 
+        function deleteTask(index) {
+            let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            tasks.splice(index, 1);
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            displayTasks();
+        }
 
-    for (let i = 0; i < tasks.length; i++) {
-    let li = document.createElement("li");
-    li.innerHTML = `${tasks[i].task} - <strong>${tasks[i].priority}</strong> [Deadline ${tasks[i].date}]`;
-
-    taskList.appendChild(li);
-
-    let deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "❌";
-            deleteBtn.style.marginLeft = "10px";
-            deleteBtn.style.cursor = "pointer";
+        function editTask(index) {
+            let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            let taskInput = document.getElementById("task");
+            let priorityInput = document.getElementById("priority");
+            let dateInput = document.getElementById("date");
 
             
-            deleteBtn.onclick = function() {
-                deleteTask(i);
-            };
-            li.appendChild(deleteBtn); 
-            taskList.appendChild(li);
-}
+            taskInput.value = tasks[index].task;
+            priorityInput.value = tasks[index].priority;
+            dateInput.value = tasks[index].date;
 
+            
+            taskInput.setAttribute("data-index", index);
+        }
 
-}
-function deleteTask(index) {
-        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        tasks.splice(index, 1); 
-        localStorage.setItem("tasks", JSON.stringify(tasks)); 
-        displayTasks(); 
-    }
-
+        displayTasks();
         </script>
     </body>
 </html>
