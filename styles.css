@@ -1,0 +1,94 @@
+/* General Styles */
+body {
+    background-image: url('winter.jpg') !important; /* Replace with your actual image filename */
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+body {
+    font-family: 'Arial', sans-serif !important;
+    background-color: #f4f7fc !important;
+    color: #333 !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    text-align: center !important;
+}
+
+/* Header */
+h1 {
+    font-size: 2rem !important;
+    color: #bbf11a !important;
+}
+h2 {
+    font-size: 2rem !important;
+    color: #010b04 !important;
+   
+    
+}
+/* Table */
+table {
+    margin: 20px auto !important;
+    padding: 15px !important;
+    background: white !important;
+    border-radius: 10px !important;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Inputs and Select */
+input, select {
+    padding: 10px !important;
+    width: 90% !important;
+    margin-top: 5px !important;
+    border: 2px solid #ddd !important;
+    border-radius: 5px !important;
+    font-size: 1rem !important;
+}
+
+/* Button */
+.save {
+    background: linear-gradient(-180deg, #c20b2d 0%, #9ede08 100%) !important;
+    border-radius: 5px !important;
+    padding: 10px 15px !important;
+    color: white !important;
+    font-size: 1rem !important;
+    cursor: pointer !important;
+    width: 100% !important;
+    border: none !important;
+    transition: 0.3s !important;
+}
+
+.save:hover {
+    background: linear-gradient(-180deg, #730db3 0%, #37AEE2 100%) !important;
+}
+
+/* Task List */
+#taskList {
+    list-style-type: none !important;
+    padding: 0 !important;
+    margin-top: 20px !important;
+}
+
+#taskList li {
+    background: white !important;
+    padding: 10px !important;
+    margin: 5px 0 !important;
+    border-left: 5px solid #4a073e !important;
+    border-radius: 5px !important;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1) !important;
+    text-align: left !important;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    table {
+        width: 90% !important;
+    }
+
+    input, select {
+        width: 100% !important;
+    }
+}

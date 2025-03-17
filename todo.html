@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A to do app">
+        <meta name="keywords" content="HTML+>CSS+>Js">
+        <meta name="author" content="V">
+        <link rel="stylesheet" href="styles.css">
+        <title>To_Do</title>
+    </head>
+
+    <body>
+
+        
+        <h1>My To Do App</h1>
+        <table>
+            <tr>
+                <td>
+                    <label for="task"><b>Task</b> </label>
+                    <input type="text" placeholder="Enter the task name" required id="task">                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="priority"><b>Priority</b></label>
+                    <select id="priority">
+                        <option value="urgent">Urgent</option>
+                        <option value="not-urgent">Not Urgent</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="date"><b>Deadline</b></label>
+                    <input type="date" placeholder="Enter the deadline" required id="date"> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="save()" class="save">Add Task</button>
+                </td>
+            </tr>
+        </table>
+        
+            <h2>Saved Tasks:</h2>
+        <ul id="taskList"></ul>
+        
+
+        <script>
+        function save() {
+            let task = document.getElementById("task").value;
+            let priority = document.getElementById("priority").value;
+             let date=  document.getElementById("date").value;
+            if (task === "") {
+                alert("Please enter a task!");
+                return;
+            }
+
+            let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+            tasks.push({ task, priority,date });
+
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+
+            displayTasks();
+
+     taskInput.value = "";
+    priorityInput.value = "urgent"; 
+    dateInput.value = "";
+        }
+
+        function sortTasksByDate(tasks) {
+    return tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+}
+
+
+        function displayTasks(){
+            let taskList = document.getElementById("taskList");
+                  taskList.innerHTML = ""; 
+
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks = sortTasksByDate(tasks);
+
+
+
+
+
+
+    for (let i = 0; i < tasks.length; i++) {
+    let li = document.createElement("li");
+    li.innerHTML = `${tasks[i].task} - <strong>${tasks[i].priority}</strong> [Deadline ${tasks[i].date}]`;
+
+    taskList.appendChild(li);
+
+    let deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "❌";
+            deleteBtn.style.marginLeft = "10px";
+            deleteBtn.style.cursor = "pointer";
+
+            
+            deleteBtn.onclick = function() {
+                deleteTask(i);
+            };
+            li.appendChild(deleteBtn); 
+            taskList.appendChild(li);
+}
+
+
+}
+function deleteTask(index) {
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks.splice(index, 1); 
+        localStorage.setItem("tasks", JSON.stringify(tasks)); 
+        displayTasks(); 
+    }
+
+        </script>
+    </body>
+</html>
